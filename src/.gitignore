@@ -1,4 +1,34 @@
-*.wav
+# CMake generated files
+build/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+Makefile
+*.cbp # CodeBlocks project files
+*.depend # Dependency files
 
-wav
+# IDE specific files (examples)
+.idea/ # IntelliJ IDEA
+.vscode/ # VS Code
+*.vcxproj* # Visual Studio project files
+*.sln # Visual Studio solution files
+*.suo # Visual Studio solution user options
+*.user # Visual Studio user files
+
+# Build artifacts and temporary files
 *.o
+*.obj
+*.lo
+*.la
+*.so
+*.a
+*.dll
+*.lib
+*.exe
+*.out
+*.bin
+*.log
+*.tmp
+
+amx.egg-info/

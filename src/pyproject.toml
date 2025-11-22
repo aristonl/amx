@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "amx"
+version = "1.0"
+requires-python = ">=3.10"
+dependencies = [
+	"numpy"
+]
+
+[project.scripts]
+amx = "cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "python"}
+py-modules = ["cli"]
