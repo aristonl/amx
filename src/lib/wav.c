@@ -299,6 +299,11 @@ wav_open_read(path, info)
 		return NULL;
 	}
 
+	if (info->channels == 0 || info->channels > WAV_MAX_CHANNELS) {
+		fclose(fp);
+		return NULL;
+	}
+
 	wr = malloc(sizeof(*wr));
 	if (wr == NULL) {
 		fclose(fp);
@@ -385,7 +390,7 @@ wav_open_write(path, info)
 	if (info->audio_format != 1)
 		return NULL;
 
-	if (info->channels == 0)
+	if (info->channels == 0 || info->channels > WAV_MAX_CHANNELS)
 		return NULL;
 
 	if (info->bitdepth != 16 &&

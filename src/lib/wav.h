@@ -9,6 +9,8 @@
 #define FMT_SIGNATURE "fmt "
 #define DATA_SIGNATURE "data"
 
+#define WAV_MAX_CHANNELS 12 // only supporting up to 7.1.4 (enough for atmos)
+
 struct wav_info {
 	uint16_t audio_format;
 	uint16_t channels;
