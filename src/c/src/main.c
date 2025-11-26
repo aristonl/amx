@@ -4,10 +4,21 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include <wav.h>
 #include <filters.h>
 #include <lfe.h>
+
+static float
+compute_alpha(fc, fs)
+	float fc;
+	float fs;
+{
+    // α = 1 - exp(-2π fc / fs)
+    float x = -2.0f * (float)M_PI * fc / fs;
+    return 1.0f - expf(x);
+}
 
 int
 main(argc, argv)
@@ -66,7 +77,9 @@ main(argc, argv)
 	float *LFE = buf[2];
 
 	LPState lfe_state = {0};
-	float alpha = 0.05f;
+	float fc = 120.f;
+	float fs = (float)in_info.sample_rate;
+	float alpha = compute_alpha(fc, fs);
 	float gain = 1.0f;
 
 	for (;;) {
