@@ -6,6 +6,16 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 add_subdirectory(c/libwav)
 
+add_library(amxdsp
+	c/dsp/filters.c
+	c/dsp/lfe.c
+)
+
+target_include_directories(amxdsp PUBLIC
+	c/dsp/include
+	c/libwav/include
+)
+
 add_executable(amx-core
 	c/src/main.c
 )
@@ -13,6 +23,7 @@ add_executable(amx-core
 target_include_directories(amx-core PRIVATE
 	c/include
 	c/libwav/include
+	c/dsp/include
 )
 
-target_link_libraries(amx-core PRIVATE amxwav m)
+target_link_libraries(amx-core PRIVATE amxdsp amxwav m)
