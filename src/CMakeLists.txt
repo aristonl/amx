@@ -9,6 +9,7 @@ add_subdirectory(c/libwav)
 add_library(amxdsp
 	c/dsp/filters.c
 	c/dsp/lfe.c
+	c/dsp/centre.c
 )
 
 target_include_directories(amxdsp PUBLIC

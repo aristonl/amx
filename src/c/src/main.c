@@ -9,6 +9,7 @@
 #include <wav.h>
 #include <filters.h>
 #include <lfe.h>
+#include <centre.h>
 
 static float
 compute_alpha(fc, fs)
@@ -45,7 +46,7 @@ main(argc, argv)
 	}
 
 	struct wav_info out_info = in_info;
-	out_info.channels = 3;
+	out_info.channels = 4;
 	out_info.total_frames = 0;
 
 	struct wav_writer *ww = wav_open_write(out_path, &out_info);
@@ -57,15 +58,16 @@ main(argc, argv)
 	}
 
 	size_t max_frames = 1024;
-	float *buf[3];
+	float *buf[4];
 
 	buf[0] = malloc(sizeof(float) * max_frames);
 	buf[1] = malloc(sizeof(float) * max_frames);
 	buf[2] = malloc(sizeof(float) * max_frames);
+	buf[3] = malloc(sizeof(float) * max_frames);
 
-	if (!buf[0] || !buf[1] || !buf[2]) {
+	if (!buf[0] || !buf[1] || !buf[2] || !buf[3]) {
 		fprintf(stderr, "Allocation failed\n");
-		for (i = 0; i < 3; i++)
+		for (i = 0; i < 4; i++)
 			free(buf[i]);
 		wav_close_read(wr);
 		wav_close_write(ww);
@@ -74,24 +76,32 @@ main(argc, argv)
 
 	float *L = buf[0];
 	float *R = buf[1];
-	float *LFE = buf[2];
+	float *C = buf[2];
+	float *LFE = buf[3];
 
 	LPState lfe_state = {0};
 	float fc = 120.f;
 	float fs = (float)in_info.sample_rate;
 	float alpha = compute_alpha(fc, fs);
-	float gain = 1.0f;
+	float lfe_gain = 1.0f;
+
+	float centre_gain = 1.0f;
+
+	float wL = 0.5f;
+	float wR = 0.5f;
 
 	for (;;) {
 		size_t frames = wav_read_frames_f32(wr, buf, max_frames);
 		if (frames == 0)
 			break;
 
-		build_lfe_from_stereo(L, R, LFE, frames, &lfe_state, alpha, gain);
+		build_centre_from_stereo(L, R, C, frames, centre_gain);
+
+		build_lfe_from_stereo(L, R, LFE, frames, &lfe_state, alpha, lfe_gain);
 		wav_write_frames_f32(ww, buf, frames);
 	}
 
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < 4; i++)
 		free(buf[i]);
 
 	wav_close_read(wr);
