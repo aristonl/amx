@@ -1,12 +1,13 @@
 #include <centre.h>
 
 void
-build_centre_from_stereo(L, R, C, frames, gain)
-	const float *L;
-	const float *R;
+build_centre_from_stereo(L, R, C, frames, gain, subtract)
+	float *L;
+	float *R;
 	float *C;
 	size_t frames;
 	float gain;
+	float subtract;
 {
 	size_t i;
 
@@ -16,6 +17,10 @@ build_centre_from_stereo(L, R, C, frames, gain)
 
 		float mid = 0.5f * (l + r);
 
+		float sub = subtract * mid;
+
+		L[i] = l - sub;
+		R[i] = r - sub;
 		C[i] = gain * mid;
 	}
 }

@@ -86,6 +86,7 @@ main(argc, argv)
 	float lfe_gain = 1.0f;
 
 	float centre_gain = 1.0f;
+	float subtract_factor = 0.7f;
 
 	float wL = 0.5f;
 	float wR = 0.5f;
@@ -95,7 +96,7 @@ main(argc, argv)
 		if (frames == 0)
 			break;
 
-		build_centre_from_stereo(L, R, C, frames, centre_gain);
+		build_centre_from_stereo(L, R, C, frames, centre_gain, subtract_factor);
 
 		build_lfe_from_stereo(L, R, LFE, frames, &lfe_state, alpha, lfe_gain);
 		wav_write_frames_f32(ww, buf, frames);
