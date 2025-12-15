@@ -14,7 +14,7 @@ build_centre_from_stereo(L, R, C, frames, gain, subtract)
 	size_t i;
 
 	const float eps = 1e-6f;
-	const float steer_f = 1.5f;
+	const float steer_f = 0.5f;
 
 	for (i = 0; i < frames; i++) {
 		float l = L[i];

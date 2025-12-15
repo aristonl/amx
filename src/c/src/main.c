@@ -86,7 +86,7 @@ main(argc, argv)
 	float lfe_gain = 1.0f;
 
 	float centre_gain = 1.0f;
-	float subtract_factor = 0.7f;
+	float subtract_factor = 0.35f;
 
 	float wL = 0.5f;
 	float wR = 0.5f;
